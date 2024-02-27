@@ -6,8 +6,9 @@ using namespace std;
 struct Bank
 {
     string f_name, l_name, ph_no, address, cnic;
+    int amount;
 
-    Bank() : f_name(""), l_name(""), ph_no(""), address(""), cnic("") {}
+    Bank() : f_name(""), l_name(""), ph_no(""), address(""), cnic(""), amount(0) {}
 
     void welcome()
     {
@@ -23,18 +24,21 @@ struct Bank
         cout << "Please enter your Phone no.: ";
         cin >> ph_no;
         cout << "Please enter your Address: ";
-        cin >> address;
+        cin.ignore();
+        getline(cin, address);
         cout << "Please enter your CNIC: ";
         cin >> cnic;
     }
 
     void display()
     {
-        cout << "Your First name: " << f_name << endl;
+        cout << "\nYour First name: " << f_name << endl;
         cout << "Your Last name: " << l_name << endl;
         cout << "Your Phone no.: " << ph_no << endl;
         cout << "Your Address: " << address << endl;
         cout << "Your CNIC: " << cnic << endl;
+        cout << "Your current Balance: " << amount << endl
+             << endl;
     }
 
     // Serialize function to write object to file
@@ -78,6 +82,31 @@ int main()
             else
             {
                 cout << "Error opening file!: " << endl;
+            }
+        }
+        else if (key == 2)
+        {
+            string nam;
+            int am;
+            cout << "Please enter your First name: ";
+            cin >> nam;
+
+            ifstream u("C:/Users/asus/Desktop/Coding/Bank_Management/Reg_users.dat");
+
+            while (u.read((char *)&b, sizeof(b)))
+            {
+                if (nam == b.f_name)
+                {
+                    b.display();
+                    cout << "Please enter new amount: ";
+                    cin >> am;
+                    b.amount += am;
+                    ofstream f("C:/Users/asus/Desktop/Coding/Bank_Management/Reg_users1.dat", ios::app);
+                }
+                else
+                {
+                    cout << "Computer is either searching or wasn't able to find your record.\n";
+                }
             }
         }
 
